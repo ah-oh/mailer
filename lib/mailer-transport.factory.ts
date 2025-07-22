@@ -1,5 +1,4 @@
-import { createTransport } from 'nodemailer';
-import * as Mail from 'nodemailer/lib/mailer';
+import { createTransport, Transporter } from 'nodemailer';
 
 import {
   MailerOptions,
@@ -8,6 +7,7 @@ import {
 import { MailerTransportFactory as IMailerTransportFactory } from './interfaces/mailer-transport-factory.interface';
 import { Inject } from '@nestjs/common';
 import { MAILER_OPTIONS } from './constants/mailer.constant';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export class MailerTransportFactory implements IMailerTransportFactory {
   constructor(
@@ -15,7 +15,9 @@ export class MailerTransportFactory implements IMailerTransportFactory {
     private readonly options: MailerOptions,
   ) {}
 
-  public createTransport(opts?: TransportType): Mail {
+  public createTransport(
+    opts?: TransportType,
+  ): Transporter<SMTPTransport.SentMessageInfo> {
     return createTransport(
       opts || this.options.transport,
       this.options.defaults,
