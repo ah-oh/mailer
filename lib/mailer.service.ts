@@ -11,7 +11,7 @@ import {
 } from './constants/mailer.constant';
 
 /** Interfaces **/
-import { MailerOptions } from './interfaces/mailer-options.interface';
+import { MailerOptions, TransportType } from './interfaces/mailer-options.interface';
 import { TemplateAdapter } from './interfaces/template-adapter.interface';
 import { ISendMailOptions } from './interfaces/send-mail-options.interface';
 import { MailerTransportFactory as IMailerTransportFactory } from './interfaces/mailer-transport-factory.interface';
@@ -175,5 +175,25 @@ export class MailerService {
     );
     this.initTemplateAdapter(this.templateAdapter, this.transporters.get(transporterName)!);
     return transporterName;
+  }
+
+
+  public setTransporter(key: string, settings: TransportType): Transporter {
+    if (this.transporters.has(key)) {
+      this.transporters.get(key).close();
+    }
+    const newTransporter = this.transportFactory.createTransport(settings);
+    this.initTemplateAdapter(this.templateAdapter, newTransporter);
+    this.transporters.set(key, newTransporter);
+    return newTransporter;
+  }
+  public hasTransporter(key: string): boolean {
+    if (!this.transporters) {
+      return false;
+    }
+    return this.transporters.has(key);
+  }
+  public getTransporter(key: string): Transporter | undefined {
+    return this.transporters.get(key);
   }
 }
