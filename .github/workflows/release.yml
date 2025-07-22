@@ -36,7 +36,7 @@ jobs:
       - name: Install npm dependencies
         run: npm install --force
       - name: Run build task
-        run: npm run build @ah-oh/mailer
+        run: npm run build
       - name: Publish
         uses: JS-DevTools/npm-publish@v1
         with:
