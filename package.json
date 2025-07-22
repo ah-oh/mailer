@@ -1,5 +1,5 @@
 {
-  "name": "@nestjs-modules/mailer",
+  "name": "@ah-oh/mailer",
   "version": "2.0.2",
   "private": false,
   "description": "NestJS - a mailer module (@mailer)",
